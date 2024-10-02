@@ -1,5 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { addContact, deleteContact, fetchContacts } from './contactsOps';
+import { selectContacts, selectNameFilter } from './selectors';
 
 const initialState = {
   items: [],
@@ -53,3 +54,15 @@ const contactsSlice = createSlice({
 });
 
 export const contactReducer = contactsSlice.reducer;
+
+//Створюємо складний мемоізований селектор пошуку
+export const selectFilteredContacts = createSelector(
+  [selectContacts, selectNameFilter],
+  (contacts, filter) => {
+    return contacts.filter(
+      ({ name, number }) =>
+        name.toLowerCase().includes(filter.toLowerCase()) ||
+        number.includes(filter)
+    );
+  }
+);

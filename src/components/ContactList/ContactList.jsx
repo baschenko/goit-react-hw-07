@@ -1,18 +1,11 @@
 import { useSelector } from 'react-redux';
 import Contact from '../Contact/Contact';
 import s from './ContactList.module.css';
-import { selectContacts, selectNameFilter } from '../../redux/selectors';
+import { selectFilteredContacts } from '../../redux/contactsSlice';
 
 const ContactList = () => {
-  const contacts = useSelector(selectContacts);
-  const filter = useSelector(selectNameFilter);
-
-  // Шукаємо пошуковий запрос або за ім'ям або за номером телефону
-  const filteredContacts = contacts.filter(
-    contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase()) ||
-      contact.number.includes(filter)
-  );
+  // Викликаємо мемоізований масив в залежності від пошукового запрос або за ім'ям або за номером телефону
+  const filteredContacts = useSelector(selectFilteredContacts);
 
   return (
     <div>
